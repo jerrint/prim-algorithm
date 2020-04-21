@@ -3,12 +3,12 @@
 #include <vector>
 using namespace std;
 
-int smallestVertex(vector<int> key[], vector<bool> mst[]) {
+int smallestVertex(vector<int> key, vector<bool> mst) {
   int smallest = INT_MAX;
   int index;
   for (int i=0; i<key.size(); i++) {
-    if (mst[i] == false && key[i] < smallest) {
-      smallest = key[i];
+    if (mst.at(i) == false && key.at(i) < smallest) {
+      smallest = key.at(i);
       index = i;
     }
   }
