@@ -1,5 +1,4 @@
-#include <bits>
-#include <stdc++.h>
+#include <bits/stdc++.h>
 #include <vector>
 using namespace std;
 
@@ -15,9 +14,9 @@ int smallestVertex(vector<int> key, vector<bool> mst) {
   return index;
 }
 
-void printMST(vector<int> key[], vector<int> parent[]) {
+void printMST(vector<int> key, vector<int> parent) {
   for (int i=1; i<key.size(); i++) {
-    cout << "Parent: " << parent[i] << " Vertex: " << i << ", Distance: " << key[i] << endl;
+    cout << "Parent: " << parent.at(i) << " Vertex: " << i << ", Distance: " << key.at(i) << endl;
   }
 }
 
@@ -26,16 +25,17 @@ void primMatrixWithoutPriorityQ(vector<vector<int>> Graph) {
   vector<int> parent;
   vector<bool> mst;
   for (int i=0; i<Graph.at(0).size(); i++) {
-    key.at(i) = INT_MAX;
-    mst.at(i) = false;
+    key.push_back(INT_MAX);
+    mst.push_back(false);
+    parent.push_back(-1);
   }
   key.at(0) = 0;
   for (int i=0; i<Graph.at(0).size()-1; i++) {
     int u = smallestVertex(key, mst);
     mst.at(u) = true;
-    for (int v=0; v<Graph.size(); v++) {
+    for (int v=0; v<Graph.at(0).size(); v++) {
       if (Graph.at(u).at(v) != 0 && mst.at(v) == false && Graph.at(u).at(v) < key.at(v)) {
-        key.at(u) = Graph.at(u).at(v);
+        key.at(v) = Graph.at(u).at(v);
         parent.at(v) = u;
       }
     }
@@ -44,4 +44,18 @@ void primMatrixWithoutPriorityQ(vector<vector<int>> Graph) {
 }
 
 int main() {
+  int graph[5][5] = { { 0, 2, 0, 6, 0 },
+                      { 2, 0, 3, 8, 5 },
+                      { 0, 3, 0, 0, 7 },
+                      { 6, 8, 0, 0, 9 },
+                      { 0, 5, 7, 9, 0 } };
+  vector<vector<int>> g;
+  for (int i=0; i<5; i++) {
+    vector<int> v;
+    for (int j=0; j<5; j++) {
+      v.push_back(graph[i][j]);
+    }
+    g.push_back(v);
+  }
+  primMatrixWithoutPriorityQ(g);
 }
