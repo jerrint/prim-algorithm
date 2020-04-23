@@ -1,16 +1,7 @@
-#include <bits/stdc++.h>
-
+#include "primsAdjacencyList.h"
 using namespace std;
 
-void addEdge(vector<pair<int,int>> adjacent[], int src, int dest, int weight);
-vector<int> prims(vector<pair<int,int>>adjacent[], int numV);
 
-int main(){
-	
-
-	int numVertices = 10;
-	
-	vector<pair<int,int>> adjacent[numVertices];
 	//add edges in form addEdge(adjacentVect to store edges, souce vert, destination vert, weight);
 	//best to add edges in order starting with node 0
 
@@ -28,6 +19,14 @@ int main(){
 	addEdge(adjacent, 6,7,1);
 	addEdge(adjacent, 6,8,6);
 	addEdge(adjacent, 7,8,7);*/
+/*
+int main(){
+	
+
+	int numVertices = 10;
+	
+	vector<pair<int,int>> adjacent[numVertices];
+
 	
 	addEdge(adjacent, 0,1,3);
 	addEdge(adjacent, 0,3,4);
@@ -58,8 +57,8 @@ int main(){
 	
 	return 0;
 }
-
-vector<int> prims(vector<pair<int,int>>adjacent[], int numV){
+*/
+vector<int> primsAdjacencyList::prims(vector<pair<int,int>>adjacent[], int numV){
 	//numV is the number of nodes in our graph
 	//adj[]s first value is the current node key, adj[]s second val is the current nodes edge weight
 	
@@ -103,7 +102,7 @@ vector<int> prims(vector<pair<int,int>>adjacent[], int numV){
 	return parent;
 }
 
-void addEdge(vector<pair<int,int>> adjacent[], int src, int dest, int weight){
+void primsAdjacencyList::addEdge(vector<pair<int,int>> adjacent[], int src, int dest, int weight){
 	//adds an edge to our adjacency list
 	//pairs include the node key we are going to, followed by the weight of the edge between the two nodes
 	pair<int, int> sourcePair = make_pair(dest, weight);

@@ -1,11 +1,10 @@
-#include <bits/stdc++.h>
-#include <vector>
+#include"primMatrix.h"
 using namespace std;
 
-int smallestVertex(vector<int> key, vector<bool> mst) {
+int primMatrix::smallestVertex(vector<int> key, vector<bool> mst) {
   int smallest = INT_MAX;
   int index;
-  for (int i=0; i<key.size(); i++) {
+  for (unsigned int i=0; i<key.size(); i++) {
     if (mst.at(i) == false && key.at(i) < smallest) {
       smallest = key.at(i);
       index = i;
@@ -14,26 +13,26 @@ int smallestVertex(vector<int> key, vector<bool> mst) {
   return index;
 }
 
-void printMST(vector<int> key, vector<int> parent) {
-  for (int i=1; i<key.size(); i++) {
+void primMatrix::printMST(vector<int> key, vector<int> parent) {
+  for (unsigned int i=1; i<key.size(); i++) {
     cout << "Parent: " << parent.at(i) << " Vertex: " << i << ", Distance: " << key.at(i) << endl;
   }
 }
 
-void primMatrixWithoutPriorityQ(vector<vector<int>> Graph) {
+void primMatrix::primMatrixWithoutPriorityQ(vector<vector<int>> Graph) {
   vector<int> key;
   vector<int> parent;
   vector<bool> mst;
-  for (int i=0; i<Graph.at(0).size(); i++) {
+  for (unsigned int i=0; i<Graph.at(0).size(); i++) {
     key.push_back(INT_MAX);
     mst.push_back(false);
     parent.push_back(-1);
   }
   key.at(0) = 0;
-  for (int i=0; i<Graph.at(0).size()-1; i++) {
+  for (unsigned int i=0; i<Graph.at(0).size()-1; i++) {
     int u = smallestVertex(key, mst);
     mst.at(u) = true;
-    for (int v=0; v<Graph.at(0).size(); v++) {
+    for (unsigned int v=0; v<Graph.at(0).size(); v++) {
       if (Graph.at(u).at(v) != 0 && mst.at(v) == false && Graph.at(u).at(v) < key.at(v)) {
         key.at(v) = Graph.at(u).at(v);
         parent.at(v) = u;
@@ -42,7 +41,7 @@ void primMatrixWithoutPriorityQ(vector<vector<int>> Graph) {
   }
   printMST(key, parent);
 }
-
+/*
 int main() {
   int graph[5][5] = { { 0, 2, 0, 6, 0 },
                       { 2, 0, 3, 8, 5 },
@@ -59,3 +58,4 @@ int main() {
   }
   primMatrixWithoutPriorityQ(g);
 }
+*/
