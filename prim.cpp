@@ -33,7 +33,7 @@ int main(){
 	aGraph.primMatrixWithoutPriorityQ(g);
 	auto stop = high_resolution_clock::now(); 
 	auto duration = duration_cast<microseconds>(stop - start); 
-	cout << "Duration =" << duration.count() << endl;
+	cout << "Duration in microseconds=" << duration.count() << endl;
 	
 	
 	vector<int> adjacentSolution;
@@ -47,6 +47,6 @@ int main(){
 		if(i == 0) printf("====================\nADJACENCY LIST REPRESENTATION WITH PRIORITY QUEUE\n====================\n");
 		printf("Parent: %d Vertex: %d\n", adjacentSolution[i+1], i+1);
 	}
-	cout << "Duration =" << duration1.count() << endl;
+	cout << "Duration in microseconds=" << duration1.count() << endl;
 	return 0;
 }
