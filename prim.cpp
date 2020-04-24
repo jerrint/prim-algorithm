@@ -6,19 +6,20 @@ using namespace std;
 using namespace std::chrono; 
 
 int main(){
+	int numVertices = 5;
 	primMatrix aGraph;
 	primsAdjacencyList aList;
-	int graph[5][5] = { { 0, 2, 0, 6, 0 },
+	int graph[numVertices][numVertices] = { { 0, 2, 0, 6, 0 },
 		   	    { 2, 0, 3, 8, 5 },
 		   	    { 0, 3, 0, 0, 7 },
 		   	    { 6, 8, 0, 0, 9 },
 		   	    { 0, 5, 7, 9, 0 } };
 	vector<vector<int>> g;
 	
-	int numVertices = 5;
+
 	vector<pair<int,int>> adjacent[numVertices];
 	
-	for (int i=0; i<5; i++) {
+	for (int i=0; i<numVertices; i++) {
 		vector<int> v;
 		for (int j=0; j<5; j++) {
 			v.push_back(graph[i][j]);
