@@ -14,9 +14,10 @@ int primMatrix::smallestVertex(vector<int> key, vector<bool> mst) {
 }
 
 void primMatrix::printMST(vector<int> key, vector<int> parent) {
-  for (unsigned int i=1; i<key.size(); i++) {
+  /*for (unsigned int i=1; i<key.size(); i++) {
     cout << "Parent: " << parent.at(i) << " Vertex: " << i << ", Distance: " << key.at(i) << endl;
   }
+  */
 }
 
 void primMatrix::primMatrixWithoutPriorityQ(vector<vector<int>> Graph) {
