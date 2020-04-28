@@ -9,161 +9,107 @@ using namespace std::chrono;
 
 int main(){
 	srand(time(0));
-	int numVertices1 = 5;
-	int numVertices2 = 50;
-	int numVertices3 = 100;
-	int numVertices4 = 1000;
-	primMatrix aGraph1, aGraph2, aGraph3, aGraph4, aGraph5, aGraph6, aGraph7, aGraph8;
-	primsAdjacencyList aList1, aList2, aList3, aList4, aList5, aList6, aList7, aList8;
+	int numVertices[] = {100,200,300,400,500,600,700,800,900,1000};
+
+	vector<primMatrix> matrixg(20);
+	vector<primsAdjacencyList> Lists(20);
+	for(unsigned int i =0 ; i < matrixg.size(); i++) {
+		primMatrix aMatrix;
+		primsAdjacencyList aList;
+		matrixg.push_back(aMatrix);
+		Lists.push_back(aList);
+	}
+
 	/* = 	  { { 0, 2, 0, 6, 0 },
 		   	    { 2, 0, 3, 8, 5 },
 		   	    { 0, 3, 0, 0, 7 },
 		   	    { 6, 8, 0, 0, 9 },
 		   	    { 0, 5, 7, 9, 0 } };
 		   	 */
-	int sparsegraph1[numVertices1][numVertices1] = {0};		   	    
-	int sparsegraph2[numVertices2][numVertices2] = {0};
-	int sparsegraph3[numVertices3][numVertices3] = {0};
-	int sparsegraph4[numVertices4][numVertices4] = {0};
-	int densegraph1[numVertices1][numVertices1] = {0};
-	int densegraph2[numVertices2][numVertices2] = {0};
-	int densegraph3[numVertices3][numVertices3] = {0};
-	int densegraph4[numVertices4][numVertices4] = {0};
-	
-	//SPARSE GRAPH TESTS
-	for(int i = 0; i < numVertices1 -1; i++){
-		int random = (rand() % 10) +1;
-		sparsegraph1[i][i+1] = random;
-		sparsegraph1[i +1][1] = random;
-	}
-	for(int i = 0; i < numVertices2 -1; i++){
-		int random = (rand() % 10) +1;
-		sparsegraph2[i][i+1] = random;
-		sparsegraph2[i +1][1] = random;
-	}
-	for(int i = 0; i < numVertices3-1; i++){
-		int random = (rand() % 10) +1;
-		sparsegraph3[i][i+1] = random;
-		sparsegraph3[i +1][1] = random;
-	}
-	for(int i = 0; i < numVertices4-1; i++){
-		int random = (rand() % 10) +1;
-		sparsegraph4[i][i+1] = random;
-		sparsegraph4[i +1][1] = random;
-	}
-	//DENSE GRAPHS TESTS
-	for(int i = 0; i < numVertices1; i++){
-		for(int j = i+1; j < numVertices1; j++){		
-			int random = (rand() %10) +1;
-			densegraph1[i][j]	= random;
-			densegraph1[j][i] = random;
-		}
-	}
-	for(int i = 0; i < numVertices2; i++){
-		for(int j = i+1; j < numVertices2; j++){		
-			int random = (rand() %10) +1;
-			densegraph2[i][j]	= random;
-			densegraph2[j][i] = random;
-		}
-	}
-	for(int i = 0; i < numVertices3-1; i++){
-		for(int j = i+1; j < numVertices3; j++){		
-			int random = (rand() %10) +1;
-			densegraph3[i][j]	= random;
-			densegraph3[j][i] = random;
-		}
-	}
-	for(int i = 0; i < numVertices4; i++){
-		for(int j = i+1; j < numVertices4; j++){		
-			int random = (rand() %10) +1;
-			densegraph4[i][j]	= random;
-			densegraph4[j][i] = random;
-		}
-	}
-	
-	vector<vector<int>> g1, g2, g3, g4, g5, g6, g7, g8;
-	vector<pair<int,int>> adjacent1[numVertices1], adjacent2[numVertices2], adjacent3[numVertices3], adjacent4[numVertices4], adjacent5[numVertices1], adjacent6[numVertices2], adjacent7[numVertices3], adjacent8[numVertices4];
+	vector<vector<vector<int>>> sparseinputs (10);
+	vector<vector<vector<int>>> denseinputs (10);
 
-	for (int i=0; i<numVertices1; i++) {
-		vector<int> v;
-		for (int j=0; j<numVertices1; j++) {
-			v.push_back(sparsegraph1[i][j]);
-			if(i!=j && sparsegraph1[i][j]!= 0){
-				aList1.addEdge(adjacent1 , i , j, sparsegraph1[i][j]);
+	//SPARSE GRAPH TESTS
+	for(unsigned int i = 0; i < sparseinputs.size(); i++){
+		vector<vector<int>> matrix(numVertices[i]);
+		int valcopy;
+		for(int j = 0; j < numVertices[i]-1; j++){
+			vector<int> row(numVertices[i],0);	
+			if(j>0) row.at(j-1) = valcopy;
+			int random = (rand() %10) +1;
+			row.at(j+1) = random;
+			valcopy = random;
+			matrix.push_back(row);
+		}
+		sparseinputs.push_back(matrix);
+	}
+	//DENSE GRAPH TESTS assign top right diagonal values
+	for(unsigned int i = 0; i < denseinputs.size(); i++){
+		vector<vector<int>> matrix(numVertices[i]);
+		for(int j = 0; j < numVertices[i]-1; j++){
+			vector<int> row(numVertices[i],0);
+			for(int k = j+1; k < numVertices[i]; k++){
+				int random = (rand() %10) +1;
+				row.at(k) = random;
+			}	
+			matrix.push_back(row);
+		}
+		denseinputs.push_back(matrix);
+	}
+	//mirror the top right vaues to bottom left diagonal (undirected mutual weight graph)
+	for(unsigned int i = 0; i < denseinputs.size(); i++){
+		for(int j = 0; j < numVertices[i] -1; j++){
+			for(int k = j+1; k < numVertices[i]; k++){
+				denseinputs.at(i).at(k).at(j) = denseinputs.at(i).at(j).at(k);
 			}
 		}
-		g1.push_back(v);
 	}
-	for (int i=0; i<numVertices2; i++) {
-		vector<int> v;
-		for (int j=0; j<numVertices2; j++) {
-			v.push_back(sparsegraph2[i][j]);
-			if(i!=j && sparsegraph2[i][j]!= 0){
-				aList2.addEdge(adjacent2 , i , j, sparsegraph2[i][j]);
+	
+	vector<vector<vector<int>>> mat(20); //g1, g2, g3, g4, g5, g6, g7, g8;
+	vector<pair<int,int>> adjacent1[numVertices[0]], adjacent2[numVertices[1]], adjacent3[numVertices[2]], adjacent4[numVertices[3]], adjacent5[numVertices[4]], adjacent6[numVertices[5]], adjacent7[numVertices[6]], adjacent8[numVertices[7]], adjacent9[numVertices[8]], adjacent10[numVertices[9]], adjacent11[numVertices[0]], adjacent12[numVertices[1]], adjacent13[numVertices[2]], adjacent14[numVertices[3]], adjacent15[numVertices[4]], adjacent16[numVertices[5]], adjacent17[numVertices[6]], adjacent18[numVertices[7]], adjacent19[numVertices[8]], adjacent20[numVertices[9]]; 
+	
+	for (unsigned int i=0; i<mat.size(); i++) {
+		vector<vector<int>> v;
+		for (int j=0; j<numVertices[i]; j++) {
+			vector<int> row;
+			for(int k = 0; k < numVertices[i]; k++){
+				if(i < 10){
+					row.push_back(sparseinputs.at(i).at(j).at(k));
+					if(j!=k && sparseinputs.at(i).at(j).at(k) != 0){
+						if(i == 0) Lists.at(i).addEdge(adjacent1 , j , k, sparseinputs.at(i).at(j).at(k));
+						else if(i ==1) Lists.at(i).addEdge(adjacent2 , j , k, sparseinputs.at(i).at(j).at(k));
+						else if(i ==2) Lists.at(i).addEdge(adjacent3 , j , k, sparseinputs.at(i).at(j).at(k));
+						else if(i ==3) Lists.at(i).addEdge(adjacent4 , j , k, sparseinputs.at(i).at(j).at(k));
+						else if(i ==4) Lists.at(i).addEdge(adjacent5 , j , k, sparseinputs.at(i).at(j).at(k));
+						else if(i ==5) Lists.at(i).addEdge(adjacent6 , j , k, sparseinputs.at(i).at(j).at(k));
+						else if(i ==6) Lists.at(i).addEdge(adjacent7 , j , k, sparseinputs.at(i).at(j).at(k));
+						else if(i ==7) Lists.at(i).addEdge(adjacent8 , j , k, sparseinputs.at(i).at(j).at(k));
+						else if(i ==8) Lists.at(i).addEdge(adjacent9 , j , k, sparseinputs.at(i).at(j).at(k));
+						else Lists.at(i).addEdge(adjacent10 , j , k, sparseinputs.at(i).at(j).at(k));
+					}
+				}
+				else {
+					row.push_back(denseinputs.at(i-10).at(j).at(k));
+					if(j!=k && denseinputs.at(i).at(j).at(k)!= 0){
+						if(i == 0) Lists.at(i).addEdge(adjacent11 , i , j, denseinputs.at(i).at(j).at(k));
+						else if(i ==1) Lists.at(i).addEdge(adjacent12 , i , j, denseinputs.at(i).at(j).at(k));
+						else if(i ==2) Lists.at(i).addEdge(adjacent13 , i , j, denseinputs.at(i).at(j).at(k));
+						else if(i ==3) Lists.at(i).addEdge(adjacent14 , i , j, denseinputs.at(i).at(j).at(k));
+						else if(i ==4) Lists.at(i).addEdge(adjacent15 , i , j, denseinputs.at(i).at(j).at(k));
+						else if(i ==5) Lists.at(i).addEdge(adjacent16 , i , j, denseinputs.at(i).at(j).at(k));
+						else if(i ==6) Lists.at(i).addEdge(adjacent17 , i , j, denseinputs.at(i).at(j).at(k));
+						else if(i ==7) Lists.at(i).addEdge(adjacent18 , i , j, denseinputs.at(i).at(j).at(k));
+						else if(i ==8) Lists.at(i).addEdge(adjacent19 , i , j, denseinputs.at(i).at(j).at(k));
+						else Lists.at(i).addEdge(adjacent20 , i , j, denseinputs.at(i).at(j).at(k));
+					}
+				}
+
 			}
+			v.push_back(row);
 		}
-		g2.push_back(v);
+		mat.push_back(v);
 	}
-	for (int i=0; i<numVertices3; i++) {
-		vector<int> v;
-		for (int j=0; j<numVertices3; j++) {
-			v.push_back(sparsegraph3[i][j]);
-			if(i!=j && sparsegraph3[i][j]!= 0){
-				aList3.addEdge(adjacent3 , i , j, sparsegraph3[i][j]);
-			}
-		}
-		g3.push_back(v);
-	}
-	for (int i=0; i<numVertices4; i++) {
-		vector<int> v;
-		for (int j=0; j<numVertices4; j++) {
-			v.push_back(sparsegraph4[i][j]);
-			if(i!=j && sparsegraph4[i][j]!= 0){
-				aList4.addEdge(adjacent4 , i , j, sparsegraph4[i][j]);
-			}
-		}
-		g4.push_back(v);
-	}
-	for (int i=0; i<numVertices1; i++) {
-		vector<int> v;
-		for (int j=0; j<numVertices1; j++) {
-			v.push_back(densegraph1[i][j]);
-			if(i!=j && densegraph1[i][j]!= 0){
-				aList5.addEdge(adjacent5 , i , j, densegraph1[i][j]);
-			}
-		}
-		g5.push_back(v);
-	}
-	for (int i=0; i<numVertices2; i++) {
-		vector<int> v;
-		for (int j=0; j<numVertices2; j++) {
-			v.push_back(densegraph2[i][j]);
-			if(i!=j && densegraph2[i][j]!= 0){
-				aList6.addEdge(adjacent6 , i , j, densegraph2[i][j]);
-			}
-		}
-		g6.push_back(v);
-	}
-	for (int i=0; i<numVertices3; i++) {
-		vector<int> v;
-		for (int j=0; j<numVertices3; j++) {
-			v.push_back(densegraph3[i][j]);
-			if(i!=j && densegraph3[i][j]!= 0){
-				aList7.addEdge(adjacent7 , i , j, densegraph3[i][j]);
-			}
-		}
-		g7.push_back(v);
-	}
-	for (int i=0; i<numVertices4; i++) {
-		vector<int> v;
-		for (int j=0; j<numVertices4; j++) {
-			v.push_back(densegraph4[i][j]);
-			if(i!=j && densegraph4[i][j]!= 0){
-				aList8.addEdge(adjacent8 , i , j, densegraph4[i][j]);
-			}
-		}
-		g8.push_back(v);
-	}
+	/*
 	printf("====================\nADJACENCY MATRIX REPRESENTATION WITHOUT PRIORITY QUEUE\n====================\n");
 	auto start = high_resolution_clock::now(); 
 	aGraph1.primMatrixWithoutPriorityQ(g1);
@@ -254,12 +200,12 @@ int main(){
 	adjacentSolution = aList8.prims(adjacent8, numVertices4);
 	auto stop15 = high_resolution_clock::now(); 
 	auto duration15 = duration_cast<microseconds>(stop15 - start15); 	
-	/*
+	
 	for(int i = 0; i<numVertices-1; i++){
 		if(i == 0) printf("====================\nADJACENCY LIST REPRESENTATION WITH PRIORITY QUEUE\n====================\n");
 		printf("Parent: %d Vertex: %d\n", adjacentSolution[i+1], i+1);
 	}
-	*/
+	
 	cout<<"====================\nADJACENCY LIST REPRESENTATION WITH PRIORITY QUEUE\n====================\n";
 	cout << "Sparse Graph1: Duration in microseconds=" << duration8.count() << endl;
 	cout << "Sparse Graph2: Duration in microseconds=" << duration9.count() << endl;
@@ -269,5 +215,6 @@ int main(){
 	cout << "Dense Graph2: Duration in microseconds=" << duration13.count() << endl;
 	cout << "Dense Graph3: Duration in microseconds=" << duration14.count() << endl;
 	cout << "Dense Graph4: Duration in microseconds=" << duration15.count() << endl;
+	*/
 	return 0;
 }
