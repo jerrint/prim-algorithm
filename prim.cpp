@@ -9,33 +9,37 @@ using namespace std::chrono;
 
 int main(){
 	srand(time(0));
-	int numVertices[] = {100,200,300,400,500,600,700,800,900,1000};
+	int numVertices[10] = {50,100,150,200,250,300,350,400,450,500};
 
-	vector<primMatrix> matrixg(20);
-	vector<primsAdjacencyList> Lists(20);
-	for(unsigned int i =0 ; i < matrixg.size(); i++) {
+	vector<primMatrix> matrixg;
+	vector<primsAdjacencyList> Lists;
+	for(unsigned int i =0 ; i < 20; i++) {
 		primMatrix aMatrix;
 		primsAdjacencyList aList;
 		matrixg.push_back(aMatrix);
 		Lists.push_back(aList);
 	}
-
+	
 	/* = 	  { { 0, 2, 0, 6, 0 },
 		   	    { 2, 0, 3, 8, 5 },
 		   	    { 0, 3, 0, 0, 7 },
 		   	    { 6, 8, 0, 0, 9 },
 		   	    { 0, 5, 7, 9, 0 } };
 		   	 */
-	vector<vector<vector<int>>> sparseinputs (10);
-	vector<vector<vector<int>>> denseinputs (10);
+	vector<vector<vector<int>>> sparseinputs;
+	vector<vector<vector<int>>> denseinputs;
 
 	//SPARSE GRAPH TESTS
-	for(unsigned int i = 0; i < sparseinputs.size(); i++){
-		vector<vector<int>> matrix(numVertices[i]);
+	for(unsigned int i = 0; i < 10; i++){
+		vector<vector<int>> matrix;
 		int valcopy;
-		for(int j = 0; j < numVertices[i]-1; j++){
-			vector<int> row(numVertices[i],0);	
+		for(int j = 0; j < numVertices[i]; j++){
+			vector<int> row(numVertices[i],0);
 			if(j>0) row.at(j-1) = valcopy;
+			if (j == numVertices[i]-1){
+				matrix.push_back(row);
+				break;
+			}	
 			int random = (rand() %10) +1;
 			row.at(j+1) = random;
 			valcopy = random;
@@ -43,10 +47,11 @@ int main(){
 		}
 		sparseinputs.push_back(matrix);
 	}
+	
 	//DENSE GRAPH TESTS assign top right diagonal values
-	for(unsigned int i = 0; i < denseinputs.size(); i++){
-		vector<vector<int>> matrix(numVertices[i]);
-		for(int j = 0; j < numVertices[i]-1; j++){
+	for(unsigned int i = 0; i < 10; i++){
+		vector<vector<int>> matrix;
+		for(int j = 0; j < numVertices[i]; j++){
 			vector<int> row(numVertices[i],0);
 			for(int k = j+1; k < numVertices[i]; k++){
 				int random = (rand() %10) +1;
@@ -56,19 +61,20 @@ int main(){
 		}
 		denseinputs.push_back(matrix);
 	}
+	
 	//mirror the top right vaues to bottom left diagonal (undirected mutual weight graph)
-	for(unsigned int i = 0; i < denseinputs.size(); i++){
-		for(int j = 0; j < numVertices[i] -1; j++){
+	for(unsigned int i = 0; i < 10; i++){
+		for(int j = 0; j < numVertices[i]- 1; j++){
 			for(int k = j+1; k < numVertices[i]; k++){
 				denseinputs.at(i).at(k).at(j) = denseinputs.at(i).at(j).at(k);
 			}
 		}
 	}
 	
-	vector<vector<vector<int>>> mat(20); //g1, g2, g3, g4, g5, g6, g7, g8;
+	vector<vector<vector<int>>> mat; //g1, g2, g3, g4, g5, g6, g7, g8;
 	vector<pair<int,int>> adjacent1[numVertices[0]], adjacent2[numVertices[1]], adjacent3[numVertices[2]], adjacent4[numVertices[3]], adjacent5[numVertices[4]], adjacent6[numVertices[5]], adjacent7[numVertices[6]], adjacent8[numVertices[7]], adjacent9[numVertices[8]], adjacent10[numVertices[9]], adjacent11[numVertices[0]], adjacent12[numVertices[1]], adjacent13[numVertices[2]], adjacent14[numVertices[3]], adjacent15[numVertices[4]], adjacent16[numVertices[5]], adjacent17[numVertices[6]], adjacent18[numVertices[7]], adjacent19[numVertices[8]], adjacent20[numVertices[9]]; 
 	
-	for (unsigned int i=0; i<mat.size(); i++) {
+	for (unsigned int i=0; i<20; i++) {
 		vector<vector<int>> v;
 		for (int j=0; j<numVertices[i]; j++) {
 			vector<int> row;
@@ -90,17 +96,17 @@ int main(){
 				}
 				else {
 					row.push_back(denseinputs.at(i-10).at(j).at(k));
-					if(j!=k && denseinputs.at(i).at(j).at(k)!= 0){
-						if(i == 0) Lists.at(i).addEdge(adjacent11 , i , j, denseinputs.at(i).at(j).at(k));
-						else if(i ==1) Lists.at(i).addEdge(adjacent12 , i , j, denseinputs.at(i).at(j).at(k));
-						else if(i ==2) Lists.at(i).addEdge(adjacent13 , i , j, denseinputs.at(i).at(j).at(k));
-						else if(i ==3) Lists.at(i).addEdge(adjacent14 , i , j, denseinputs.at(i).at(j).at(k));
-						else if(i ==4) Lists.at(i).addEdge(adjacent15 , i , j, denseinputs.at(i).at(j).at(k));
-						else if(i ==5) Lists.at(i).addEdge(adjacent16 , i , j, denseinputs.at(i).at(j).at(k));
-						else if(i ==6) Lists.at(i).addEdge(adjacent17 , i , j, denseinputs.at(i).at(j).at(k));
-						else if(i ==7) Lists.at(i).addEdge(adjacent18 , i , j, denseinputs.at(i).at(j).at(k));
-						else if(i ==8) Lists.at(i).addEdge(adjacent19 , i , j, denseinputs.at(i).at(j).at(k));
-						else Lists.at(i).addEdge(adjacent20 , i , j, denseinputs.at(i).at(j).at(k));
+					if(j!=k && denseinputs.at(i-10).at(j).at(k)!= 0){
+						if(i == 10) Lists.at(i).addEdge(adjacent11 , j , k, denseinputs.at(i-10).at(j).at(k));
+						else if(i ==11) Lists.at(i).addEdge(adjacent12 , j , k, denseinputs.at(i-10).at(j).at(k));
+						else if(i ==12) Lists.at(i).addEdge(adjacent13 , j , k, denseinputs.at(i-10).at(j).at(k));
+						else if(i ==13) Lists.at(i).addEdge(adjacent14 , j , k, denseinputs.at(i-10).at(j).at(k));
+						else if(i ==14) Lists.at(i).addEdge(adjacent15 , j , k, denseinputs.at(i-10).at(j).at(k));
+						else if(i ==15) Lists.at(i).addEdge(adjacent16 , j , k, denseinputs.at(i-10).at(j).at(k));
+						else if(i ==16) Lists.at(i).addEdge(adjacent17 , j , k, denseinputs.at(i-10).at(j).at(k));
+						else if(i ==17) Lists.at(i).addEdge(adjacent18 , j , k, denseinputs.at(i-10).at(j).at(k));
+						else if(i ==18) Lists.at(i).addEdge(adjacent19 , j , k, denseinputs.at(i-10).at(j).at(k));
+						else Lists.at(i).addEdge(adjacent20 , j , k, denseinputs.at(i-10).at(j).at(k));
 					}
 				}
 
@@ -109,6 +115,9 @@ int main(){
 		}
 		mat.push_back(v);
 	}
+	
+	return 0;
+	
 	/*
 	printf("====================\nADJACENCY MATRIX REPRESENTATION WITHOUT PRIORITY QUEUE\n====================\n");
 	auto start = high_resolution_clock::now(); 
@@ -216,5 +225,5 @@ int main(){
 	cout << "Dense Graph3: Duration in microseconds=" << duration14.count() << endl;
 	cout << "Dense Graph4: Duration in microseconds=" << duration15.count() << endl;
 	*/
-	return 0;
+
 }
