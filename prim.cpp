@@ -4,12 +4,13 @@
 #include<stdlib.h>
 #include<time.h>
 #include <chrono>
+#include<typeinfo>
 using namespace std;
 using namespace std::chrono; 
 
 int main(){
 	srand(time(0));
-	int numVertices[10] = {50,100,150,200,250,300,350,400,450,500};
+	int numVertices[10] = {100,200,300,400,500,600,700,800,900,1000};
 
 	vector<primMatrix> matrixg;
 	vector<primsAdjacencyList> Lists;
@@ -73,12 +74,12 @@ int main(){
 	
 	vector<vector<vector<int>>> mat; //g1, g2, g3, g4, g5, g6, g7, g8;
 	vector<pair<int,int>> adjacent1[numVertices[0]], adjacent2[numVertices[1]], adjacent3[numVertices[2]], adjacent4[numVertices[3]], adjacent5[numVertices[4]], adjacent6[numVertices[5]], adjacent7[numVertices[6]], adjacent8[numVertices[7]], adjacent9[numVertices[8]], adjacent10[numVertices[9]], adjacent11[numVertices[0]], adjacent12[numVertices[1]], adjacent13[numVertices[2]], adjacent14[numVertices[3]], adjacent15[numVertices[4]], adjacent16[numVertices[5]], adjacent17[numVertices[6]], adjacent18[numVertices[7]], adjacent19[numVertices[8]], adjacent20[numVertices[9]]; 
-	
+	int check = 0;
 	for (unsigned int i=0; i<20; i++) {
 		vector<vector<int>> v;
-		for (int j=0; j<numVertices[i]; j++) {
+		for (int j=0; j<numVertices[check]; j++) {
 			vector<int> row;
-			for(int k = 0; k < numVertices[i]; k++){
+			for(int k = 0; k < numVertices[check]; k++){
 				if(i < 10){
 					row.push_back(sparseinputs.at(i).at(j).at(k));
 					if(j!=k && sparseinputs.at(i).at(j).at(k) != 0){
@@ -114,116 +115,127 @@ int main(){
 			v.push_back(row);
 		}
 		mat.push_back(v);
+		if(i ==9) check = -1;
+		check++;
+	}
+	vector<high_resolution_clock::time_point> starttimes;
+	vector<high_resolution_clock::time_point> endtimes;
+	printf("====================\nADJACENCY MATRIX REPRESENTATION WITHOUT PRIORITY QUEUE\n====================\n");
+	for(unsigned int i = 0; i <20; i++){
+		auto start = high_resolution_clock::now();
+		matrixg.at(i).primMatrixWithoutPriorityQ(mat.at(i));
+		auto stop = high_resolution_clock::now();
+		auto duration = duration_cast<microseconds>(stop - start);
+		if(i<10)cout << "Sparse Graph "<< i+1<< ": Duration in microseconds=" << duration.count() << endl;
+		else cout<<"Dense Graph "<< i-9<< ": Duration in microseconds=" << duration.count() << endl;
+	}
+	vector<microseconds> durations;
+	vector<int> adjacentSolution;
+	auto start1 = high_resolution_clock::now(); 
+	adjacentSolution = Lists.at(0).prims(adjacent1, numVertices[0]);
+	auto stop1 = high_resolution_clock::now(); 
+	durations.push_back(duration_cast<microseconds>(stop1 - start1)); 
+
+	auto start2 = high_resolution_clock::now(); 
+	adjacentSolution = Lists.at(1).prims(adjacent2, numVertices[1]);
+	auto stop2 = high_resolution_clock::now(); 
+	durations.push_back(duration_cast<microseconds>(stop2 - start2)); 
+	
+	auto start3 = high_resolution_clock::now(); 
+	adjacentSolution = Lists.at(2).prims(adjacent3, numVertices[2]);
+	auto stop3 = high_resolution_clock::now(); 
+	durations.push_back(duration_cast<microseconds>(stop3 - start3)); 
+	 
+	auto start4 = high_resolution_clock::now(); 
+	adjacentSolution = Lists.at(3).prims(adjacent4, numVertices[3]);
+	auto stop4 = high_resolution_clock::now(); 
+	durations.push_back(duration_cast<microseconds>(stop4 - start4)); 
+	
+	auto start5 = high_resolution_clock::now(); 
+	adjacentSolution = Lists.at(4).prims(adjacent5, numVertices[4]);
+	auto stop5 = high_resolution_clock::now(); 
+	durations.push_back(duration_cast<microseconds>(stop5 - start5)); 
+
+	auto start6 = high_resolution_clock::now(); 
+	adjacentSolution = Lists.at(5).prims(adjacent6, numVertices[5]);
+	auto stop6 = high_resolution_clock::now(); 
+	durations.push_back(duration_cast<microseconds>(stop6 - start6)); 
+
+	auto start7 = high_resolution_clock::now(); 
+	adjacentSolution = Lists.at(6).prims(adjacent7, numVertices[6]);
+	auto stop7 = high_resolution_clock::now(); 
+	durations.push_back(duration_cast<microseconds>(stop7 - start7)); 
+	
+	auto start8 = high_resolution_clock::now(); 
+	adjacentSolution = Lists.at(7).prims(adjacent8, numVertices[7]);
+	auto stop8 = high_resolution_clock::now(); 
+	durations.push_back(duration_cast<microseconds>(stop8 - start8)); 
+
+	auto start9 = high_resolution_clock::now(); 
+	adjacentSolution = Lists.at(8).prims(adjacent9, numVertices[8]);
+	auto stop9 = high_resolution_clock::now(); 
+	durations.push_back(duration_cast<microseconds>(stop9 - start9)); 
+	
+	auto start10 = high_resolution_clock::now(); 
+	adjacentSolution = Lists.at(9).prims(adjacent10, numVertices[9]);
+	auto stop10 = high_resolution_clock::now(); 
+	durations.push_back(duration_cast<microseconds>(stop10 - start10)); 
+	
+	auto start11 = high_resolution_clock::now(); 
+	adjacentSolution = Lists.at(10).prims(adjacent11, numVertices[0]);
+	auto stop11 = high_resolution_clock::now(); 
+	durations.push_back(duration_cast<microseconds>(stop11 - start11)); 
+	
+	auto start12 = high_resolution_clock::now(); 
+	adjacentSolution = Lists.at(11).prims(adjacent12, numVertices[1]);
+	auto stop12 = high_resolution_clock::now(); 
+	durations.push_back(duration_cast<microseconds>(stop12 - start12)); 
+	
+	auto start13 = high_resolution_clock::now(); 
+	adjacentSolution = Lists.at(12).prims(adjacent13, numVertices[2]);
+	auto stop13 = high_resolution_clock::now(); 
+	durations.push_back(duration_cast<microseconds>(stop13 - start13)); 
+	
+	auto start14 = high_resolution_clock::now(); 
+	adjacentSolution = Lists.at(13).prims(adjacent14, numVertices[3]);
+	auto stop14 = high_resolution_clock::now(); 
+	durations.push_back(duration_cast<microseconds>(stop14 - start14)); 
+	
+	auto start15 = high_resolution_clock::now(); 
+	adjacentSolution = Lists.at(14).prims(adjacent15, numVertices[4]);
+	auto stop15 = high_resolution_clock::now(); 
+	durations.push_back(duration_cast<microseconds>(stop15 - start15)); 
+	
+	auto start16 = high_resolution_clock::now(); 
+	adjacentSolution = Lists.at(15).prims(adjacent16, numVertices[5]);
+	auto stop16 = high_resolution_clock::now(); 
+	durations.push_back(duration_cast<microseconds>(stop16 - start16)); 
+	
+	auto start17 = high_resolution_clock::now(); 
+	adjacentSolution = Lists.at(16).prims(adjacent17, numVertices[6]);
+	auto stop17 = high_resolution_clock::now(); 
+	durations.push_back(duration_cast<microseconds>(stop17 - start17)); 
+	
+	auto start18 = high_resolution_clock::now(); 
+	adjacentSolution = Lists.at(17).prims(adjacent18, numVertices[7]);
+	auto stop18 = high_resolution_clock::now(); 
+	durations.push_back(duration_cast<microseconds>(stop18 - start18)); 
+	
+	auto start19 = high_resolution_clock::now(); 
+	adjacentSolution = Lists.at(18).prims(adjacent19, numVertices[8]);
+	auto stop19 = high_resolution_clock::now(); 
+	durations.push_back(duration_cast<microseconds>(stop19 - start19)); 
+	
+	auto start20 = high_resolution_clock::now(); 
+	adjacentSolution = Lists.at(19).prims(adjacent20, numVertices[9]);
+	auto stop20 = high_resolution_clock::now(); 
+	durations.push_back(duration_cast<microseconds>(stop20 - start20)); 
+	
+	cout<<"====================\nADJACENCY LIST REPRESENTATION WITH PRIORITY QUEUE\n====================\n";
+	for(unsigned int i = 0; i < 20; i ++){
+		if (i < 10)cout<< "Sparse Graph" << i+1 << ": Duration in microseconds=" << durations.at(i).count() << endl;
+		else cout<< "Dense Graph" << i-9 << ": Duration in microseconds=" << durations.at(i).count()<< endl;
 	}
 	
 	return 0;
-	
-	/*
-	printf("====================\nADJACENCY MATRIX REPRESENTATION WITHOUT PRIORITY QUEUE\n====================\n");
-	auto start = high_resolution_clock::now(); 
-	aGraph1.primMatrixWithoutPriorityQ(g1);
-	auto stop = high_resolution_clock::now(); 
-	auto duration = duration_cast<microseconds>(stop - start); 
-	cout << "Sparse Graph1: Duration in microseconds=" << duration.count() << endl;
-	
-	auto start1 = high_resolution_clock::now(); 
-	aGraph2.primMatrixWithoutPriorityQ(g2);
-	auto stop1 = high_resolution_clock::now(); 
-	auto duration1 = duration_cast<microseconds>(stop1 - start1); 
-	cout << "Sparse Graph2: Duration in microseconds=" << duration1.count() << endl;
-	
-	auto start2 = high_resolution_clock::now(); 
-	aGraph3.primMatrixWithoutPriorityQ(g3);
-	auto stop2 = high_resolution_clock::now(); 
-	auto duration2 = duration_cast<microseconds>(stop2 - start2); 
-	cout << "Sparse Graph3: Duration in microseconds=" << duration2.count() << endl;
-
-	auto start3 = high_resolution_clock::now(); 
-	aGraph4.primMatrixWithoutPriorityQ(g4);
-	auto stop3 = high_resolution_clock::now(); 
-	auto duration3 = duration_cast<microseconds>(stop3 - start3); 
-	cout << "Sparse Graph4: Duration in microseconds=" << duration3.count() << endl;
-	
-	auto start4 = high_resolution_clock::now(); 
-	aGraph5.primMatrixWithoutPriorityQ(g5);
-	auto stop4 = high_resolution_clock::now(); 
-	auto duration4 = duration_cast<microseconds>(stop4 - start4); 
-	cout << "Dense Graph1: Duration in microseconds=" << duration4.count() << endl;
-	
-	auto start5 = high_resolution_clock::now(); 
-	aGraph6.primMatrixWithoutPriorityQ(g6);
-	auto stop5 = high_resolution_clock::now(); 
-	auto duration5 = duration_cast<microseconds>(stop5 - start5); 
-	cout << "Dense Graph2: Duration in microseconds=" << duration5.count() << endl;
-	
-	auto start6 = high_resolution_clock::now(); 
-	aGraph7.primMatrixWithoutPriorityQ(g7);
-	auto stop6 = high_resolution_clock::now(); 
-	auto duration6 = duration_cast<microseconds>(stop6 - start6); 
-	cout << "Dense Graph3: Duration in microseconds=" << duration6.count() << endl;
-	
-	auto start7 = high_resolution_clock::now(); 
-	aGraph8.primMatrixWithoutPriorityQ(g8);
-	auto stop7 = high_resolution_clock::now(); 
-	auto duration7 = duration_cast<microseconds>(stop7 - start7); 
-	cout << "Dense Graph4: Duration in microseconds=" << duration7.count() << endl;
-	
-
-	vector<int> adjacentSolution;
-	auto start8 = high_resolution_clock::now(); 
-	adjacentSolution = aList1.prims(adjacent1, numVertices1);
-	auto stop8 = high_resolution_clock::now(); 
-	auto duration8 = duration_cast<microseconds>(stop8 - start8); 
-
-	auto start9 = high_resolution_clock::now(); 
-	adjacentSolution = aList2.prims(adjacent2, numVertices2);
-	auto stop9 = high_resolution_clock::now(); 
-	auto duration9 = duration_cast<microseconds>(stop9 - start9); 
-	
-	auto start10 = high_resolution_clock::now(); 
-	adjacentSolution = aList3.prims(adjacent3, numVertices3);
-	auto stop10 = high_resolution_clock::now(); 
-	auto duration10 = duration_cast<microseconds>(stop10 - start10);
-	 
-	auto start11 = high_resolution_clock::now(); 
-	adjacentSolution = aList4.prims(adjacent4, numVertices4);
-	auto stop11 = high_resolution_clock::now(); 
-	auto duration11 = duration_cast<microseconds>(stop11 - start11); 
-	
-	auto start12 = high_resolution_clock::now(); 
-	adjacentSolution = aList5.prims(adjacent5, numVertices1);
-	auto stop12 = high_resolution_clock::now(); 
-	auto duration12 = duration_cast<microseconds>(stop12 - start12); 
-
-	auto start13 = high_resolution_clock::now(); 
-	adjacentSolution = aList6.prims(adjacent6, numVertices2);
-	auto stop13 = high_resolution_clock::now(); 
-	auto duration13 = duration_cast<microseconds>(stop13 - start13); 
-
-	auto start14 = high_resolution_clock::now(); 
-	adjacentSolution = aList7.prims(adjacent7, numVertices3);
-	auto stop14 = high_resolution_clock::now(); 
-	auto duration14 = duration_cast<microseconds>(stop14 - start14); 
-	
-	auto start15 = high_resolution_clock::now(); 
-	adjacentSolution = aList8.prims(adjacent8, numVertices4);
-	auto stop15 = high_resolution_clock::now(); 
-	auto duration15 = duration_cast<microseconds>(stop15 - start15); 	
-	
-	for(int i = 0; i<numVertices-1; i++){
-		if(i == 0) printf("====================\nADJACENCY LIST REPRESENTATION WITH PRIORITY QUEUE\n====================\n");
-		printf("Parent: %d Vertex: %d\n", adjacentSolution[i+1], i+1);
-	}
-	
-	cout<<"====================\nADJACENCY LIST REPRESENTATION WITH PRIORITY QUEUE\n====================\n";
-	cout << "Sparse Graph1: Duration in microseconds=" << duration8.count() << endl;
-	cout << "Sparse Graph2: Duration in microseconds=" << duration9.count() << endl;
-	cout << "Sparse Graph3: Duration in microseconds=" << duration10.count() << endl;
-	cout << "Sparse Graph4: Duration in microseconds=" << duration11.count() << endl;
-	cout << "Dense Graph1: Duration in microseconds=" << duration12.count() << endl;
-	cout << "Dense Graph2: Duration in microseconds=" << duration13.count() << endl;
-	cout << "Dense Graph3: Duration in microseconds=" << duration14.count() << endl;
-	cout << "Dense Graph4: Duration in microseconds=" << duration15.count() << endl;
-	*/
-
 }
