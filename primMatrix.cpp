@@ -1,6 +1,7 @@
 #include"primMatrix.h"
 using namespace std;
 
+// algorithm to find the smallest vertex not in the minimum spanning tree
 int primMatrix::smallestVertex(vector<int> key, vector<bool> mst) {
   int smallest = INT_MAX;
   int index;
@@ -21,6 +22,7 @@ void primMatrix::printMST(vector<int> key, vector<int> parent) {
 }
 
 void primMatrix::primMatrixWithoutPriorityQ(vector<vector<int>> Graph) {
+  // initialize key, parent, and mst.
   vector<int> key;
   vector<int> parent;
   vector<bool> mst;
@@ -29,10 +31,15 @@ void primMatrix::primMatrixWithoutPriorityQ(vector<vector<int>> Graph) {
     mst.push_back(false);
     parent.push_back(-1);
   }
+  // choose arbitrary vertex as starting vertex
   key.at(0) = 0;
   for (unsigned int i=0; i<Graph.at(0).size()-1; i++) {
+    // find smallest vertex not in mst
     int u = smallestVertex(key, mst);
+    // insert smallest vertex into mst
     mst.at(u) = true;
+    // if the edge exists (not = 0), vertex v is not in the mst and the key is greater than the edge,
+    // we update the key and assign the parent of the v to be u
     for (unsigned int v=0; v<Graph.at(0).size(); v++) {
       if (Graph.at(u).at(v) != 0 && mst.at(v) == false && Graph.at(u).at(v) < key.at(v)) {
         key.at(v) = Graph.at(u).at(v);
