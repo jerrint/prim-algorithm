@@ -1,63 +1,6 @@
 #include "primsAdjacencyList.h"
 using namespace std;
 
-
-	//add edges in form addEdge(adjacentVect to store edges, souce vert, destination vert, weight);
-	//best to add edges in order starting with node 0
-
-	/*addEdge(adjacent, 0,1,4);
-	addEdge(adjacent, 0,7,8);
-	addEdge(adjacent, 1,2,8);
-	addEdge(adjacent, 1,7,11);
-	addEdge(adjacent, 2,3,7);
-	addEdge(adjacent, 2,8,2);
-	addEdge(adjacent, 2,5,4);
-	addEdge(adjacent, 3,4,9);
-	addEdge(adjacent, 3,5,14);
-	addEdge(adjacent, 4,5,10);
-	addEdge(adjacent, 5,6,2);
-	addEdge(adjacent, 6,7,1);
-	addEdge(adjacent, 6,8,6);
-	addEdge(adjacent, 7,8,7);*/
-/*
-int main(){
-	
-
-	int numVertices = 10;
-	
-	vector<pair<int,int>> adjacent[numVertices];
-
-	
-	addEdge(adjacent, 0,1,3);
-	addEdge(adjacent, 0,3,4);
-	addEdge(adjacent, 0,4,4);
-	addEdge(adjacent, 1,2,10);
-	addEdge(adjacent, 1,4,2);
-	addEdge(adjacent, 1,5,3);
-	addEdge(adjacent, 2,5,6);
-	addEdge(adjacent, 2,6,1);
-	addEdge(adjacent, 3,4,5);
-	addEdge(adjacent, 3,7,6);
-	addEdge(adjacent, 4,7,2);
-	addEdge(adjacent, 4,5,11);
-	addEdge(adjacent, 4,8,1);	
-	addEdge(adjacent, 5,6,2);
-	addEdge(adjacent, 5,8,3);
-	addEdge(adjacent, 5,9,11);
-	addEdge(adjacent, 6,9,8);
-	addEdge(adjacent, 7,8,4);
-	addEdge(adjacent, 8,9,7);
-	
-	vector<int> parent;
-	parent = prims(adjacent,numVertices);
-	
-	for(int i = 0; i<numVertices-1; i++){
-		printf("%d - %d\n", parent[i+1], i+1);
-	}
-	
-	return 0;
-}
-*/
 vector<int> primsAdjacencyList::prims(vector<pair<int,int>>adjacent[], int numV){
 	//numV is the number of nodes in our graph
 	//adj[]s first value is the current node key, adj[]s second val is the current nodes edge weight

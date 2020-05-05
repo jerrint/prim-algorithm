@@ -7,12 +7,13 @@
 #include<typeinfo>
 using namespace std;
 using namespace std::chrono; 
-
+//TESTER
 int main(){
+	//builds 10 sparse and 10 dense graphs and tests them on both implementations with same randomized values for both implementations
 	srand(time(0));
-	int numVertices[10] = {100,200,300,400,500,600,700,800,900,1000};
+	int numVertices[10] = {100,200,300,400,500,600,700,800,900,1000}; //10 hardcoded sizes
 
-	vector<primMatrix> matrixg;
+	vector<primMatrix> matrixg; 
 	vector<primsAdjacencyList> Lists;
 	for(unsigned int i =0 ; i < 20; i++) {
 		primMatrix aMatrix;
@@ -21,12 +22,6 @@ int main(){
 		Lists.push_back(aList);
 	}
 	
-	/* = 	  { { 0, 2, 0, 6, 0 },
-		   	    { 2, 0, 3, 8, 5 },
-		   	    { 0, 3, 0, 0, 7 },
-		   	    { 6, 8, 0, 0, 9 },
-		   	    { 0, 5, 7, 9, 0 } };
-		   	 */
 	vector<vector<vector<int>>> sparseinputs;
 	vector<vector<vector<int>>> denseinputs;
 
@@ -74,6 +69,7 @@ int main(){
 	
 	vector<vector<vector<int>>> mat; //g1, g2, g3, g4, g5, g6, g7, g8;
 	vector<pair<int,int>> adjacent1[numVertices[0]], adjacent2[numVertices[1]], adjacent3[numVertices[2]], adjacent4[numVertices[3]], adjacent5[numVertices[4]], adjacent6[numVertices[5]], adjacent7[numVertices[6]], adjacent8[numVertices[7]], adjacent9[numVertices[8]], adjacent10[numVertices[9]], adjacent11[numVertices[0]], adjacent12[numVertices[1]], adjacent13[numVertices[2]], adjacent14[numVertices[3]], adjacent15[numVertices[4]], adjacent16[numVertices[5]], adjacent17[numVertices[6]], adjacent18[numVertices[7]], adjacent19[numVertices[8]], adjacent20[numVertices[9]]; 
+	//PUSHES the edges onto the corresponding implementaitons 
 	int check = 0;
 	for (unsigned int i=0; i<20; i++) {
 		vector<vector<int>> v;
@@ -118,6 +114,7 @@ int main(){
 		if(i ==9) check = -1;
 		check++;
 	}
+	//PRINTS OUT HOW LONG IT TAKES
 	vector<high_resolution_clock::time_point> starttimes;
 	vector<high_resolution_clock::time_point> endtimes;
 	printf("====================\nADJACENCY MATRIX REPRESENTATION WITHOUT PRIORITY QUEUE\n====================\n");
